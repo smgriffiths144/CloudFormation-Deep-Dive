@@ -37,6 +37,11 @@ Parameters:
     MinLength: '1'
     NoEcho: 'true'
     Type: String
+  KeyName:
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: smg
   InstanceType:
     AllowedValues:
     - t1.micro
@@ -464,6 +469,8 @@ Resources:
       ImageId: !FindInMap [AWSRegionArch2AMI, !Ref 'AWS::Region', !FindInMap [AWSInstanceType2Arch, !Ref InstanceType, Arch]]      
       InstanceType:
         Ref: InstanceType
+      KeyName:
+        Ref: KeyName
       SecurityGroups:
       - Ref: WebServerSecurityGroup
       UserData:
